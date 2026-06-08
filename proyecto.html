@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificador Semanal de Tiempo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .contenedor {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendario {
+            display: grid;
+            grid-template-columns: 80px repeat(7, 1fr);
+            gap: 2px;
+            background-color: #ddd;
+            border: 1px solid #ccc;
+        }
+
+        .encabezado,
+        .celda {
+            padding: 10px;
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .encabezado {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        .tiempo {
+            background-color: #f9f9f9;
+            font-weight: bold;
+            color: #555;
+        }
+
+        /* Colores para categorizar uso del tiempo */
+        .trabajo {
+            background-color: #d1ecf1;
+        }
+
+        /* Azul claro */
+        .estudio {
+            background-color: #d4edda;
+        }
+
+        /* Verde claro */
+        .descanso {
+            background-color: #fff3cd;
+        }
+
+        /* Amarillo claro */
+        .ocio {
+            background-color: #f8d7da;
+        }
+
+        /* Rojo claro */
+    </style>
+</head>
+
+<body>
+
+    <div class="contenedor">
+        <h2>Análisis de Uso del Tiempo - Semanal</h2>
+
+        <div class="calendario">
+            <!-- Encabezados de los días -->
+            <div class="encabezado">Hora</div>
+            <div class="encabezado">Lunes</div>
+            <div class="encabezado">Martes</div>
+            <div class="encabezado">Miércoles</div>
+            <div class="encabezado">Jueves</div>
+            <div class="encabezado">Viernes</div>
+            <div class="encabezado">Sábado</div>
+            <div class="encabezado">Domingo</div>
+
+            <!-- Fila 08:00 -->
+            <div class="celda tiempo">08:00</div>
+            <div class="celda trabajo">Trabajo</div>
+            <div class="celda estudio">Estudio</div>
+            <div class="celda trabajo">Trabajo</div>
+            <div class="celda estudio">Estudio</div>
+            <div class="celda trabajo">Trabajo</div>
+            <div class="celda descanso">Descanso</div>
+            <div class="celda descanso">Descanso</div>
+
+            <!-- Fila 12:00 -->
+            <div class="celda tiempo">12:00</div>
+            <div class="celda descanso">Almuerzo</div>
+            <div class="celda descanso">Almuerzo</div>
+            <div class="celda descanso">Almuerzo</div>
+            <div class="celda descanso">Almuerzo</div>
+            <div class="celda descanso">Almuerzo</div>
+            <div class="celda descanso">Almuerzo</div>
+            <div class="celda descanso">Almuerzo</div>
+
+            <!-- Fila 15:00 -->
+            <div class="celda tiempo">15:00</div>
+            <div class="celda trabajo">Trabajo</div>
+            <div class="celda ocio">Deporte</div>
+            <div class="celda trabajo">Trabajo</div>
+            <div class="celda ocio">Hobbies</div>
+            <div class="celda trabajo">Trabajo</div>
+            <div class="celda ocio">Amigos</div>
+            <div class="celda descanso">Libre</div>
+        </div>
+    </div>
+
+</body>
+
+</html>
