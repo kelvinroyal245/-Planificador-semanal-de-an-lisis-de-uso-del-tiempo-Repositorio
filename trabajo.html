@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificador Semanal de Análisis del Tiempo</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef3f8;
+            padding: 20px;
+        }
+
+        .contenedor {
+            max-width: 1200px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, .1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .calendario {
+            display: grid;
+            grid-template-columns: 100px repeat(7, 1fr);
+            gap: 2px;
+        }
+
+        .encabezado {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .hora {
+            background: #ecf0f1;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+        }
+
+        .celda {
+            min-height: 70px;
+            background: white;
+            border: 1px solid #ddd;
+            padding: 10px;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .celda:hover {
+            background: #f8f9fa;
+            transform: scale(1.02);
+        }
+
+        .trabajo {
+            background: #d6eaf8;
+        }
+
+        .estudio {
+            background: #d5f5e3;
+        }
+
+        .ocio {
+            background: #fadbd8;
+        }
+
+        .descanso {
+            background: #fcf3cf;
+        }
+
+        .leyenda {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .resumen {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: none;
+            background: #3498db;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="contenedor">
+
+        <h1>📅 Planificador Semanal de Análisis del Tiempo</h1>
+
+        <div class="leyenda">
+            <div class="item">
+                <div class="color trabajo"></div>Trabajo
+            </div>
+            <div class="item">
+                <div class="color estudio"></div>Estudio
+            </div>
+            <div class="item">
+                <div class="color ocio"></div>Ocio
+            </div>
+            <div class="item">
+                <div class="color descanso"></div>Descanso
+            </div>
+        </div>
+
+        <div class="calendario" id="calendario">
+
+            <div class="encabezado">Hora</div>
+            <div class="encabezado">Lunes</div>
+            <div class="encabezado">Martes</div>
+            <div class="encabezado">Miércoles</div>
+            <div class="encabezado">Jueves</div>
+            <div class="encabezado">Viernes</div>
+            <div class="encabezado">Sábado</div>
+            <div class="encabezado">Domingo</div>
+
+        </div>
+
+        <button onclick="calcularResumen()">
+            Analizar uso del tiempo
+        </button>
+
+        <div class="resumen" id="resumen">
+            Presiona el botón para generar el análisis.
+        </div>
+
+    </div>
+
+    <script>
+
+        const horas = [
+            "08:00",
+            "10:00",
+            "12:00",
+            "14:00",
+            "16:00",
+            "18:00",
+            "20:00"
+        ];
+
+        const calendario = document.getElementById("calendario");
+
+        horas.forEach((hora, fila) => {
+
+            let horaDiv = document.createElement("div");
+            horaDiv.className = "hora";
+            horaDiv.textContent = hora;
+
+            horaDiv.ondblclick = () => {
+                let nuevaHora = prompt("Editar hora:", horaDiv.textContent);
+
+                if (nuevaHora) {
+                    horaDiv.textContent = nuevaHora;
+                }
+            };
+
+            calendario.appendChild(horaDiv);
+
+            for (let i = 0; i < 7; i++) {
+
+                let celda = document.createElement("div");
+                celda.className = "celda";
+                celda.dataset.categoria = "";
+
+                celda.ondblclick = () => {
+
+                    let tarea = prompt(
+                        "Actividad:",
+                        celda.textContent
+                    );
+
+                    if (tarea === null) return;
+
+                    let categoria = prompt(
+                        "Categoría (trabajo, estudio, ocio, descanso):",
+                        celda.dataset.categoria || "trabajo"
+                    );
+
+                    celda.textContent = tarea;
+
+                    celda.className = "celda";
+
+                    if (categoria) {
+                        celda.classList.add(categoria);
+                        celda.dataset.categoria = categoria;
+                    }
+
+                    guardarDatos();
+                };
+
+                calendario.appendChild(celda);
+            }
+        });
+
+        function guardarDatos() {
+
+            const datos = [];
+
+            document.querySelectorAll(".celda").forEach(celda => {
+
+                datos.push({
+                    texto: celda.textContent,
+                    categoria: celda.dataset.categoria
+                });
+
+            });
+
+            localStorage.setItem(
+                "planificador",
+                JSON.stringify(datos)
+            );
+        }
+
+        function cargarDatos() {
+
+            const datos = JSON.parse(
+                localStorage.getItem("planificador")
+            );
+
+            if (!datos) return;
+
+            document.querySelectorAll(".celda")
+                .forEach((celda, index) => {
+
+                    celda.textContent = datos[index].texto;
+                    celda.dataset.categoria =
+                        datos[index].categoria;
+
+                    if (datos[index].categoria) {
+                        celda.classList.add(
+                            datos[index].categoria
+                        );
+                    }
+
+                });
+
+        }
+
+        function calcularResumen() {
+
+            let trabajo = 0;
+            let estudio = 0;
+            let ocio = 0;
+            let descanso = 0;
+
+            document.querySelectorAll(".celda")
+                .forEach(celda => {
+
+                    switch (celda.dataset.categoria) {
+
+                        case "trabajo":
+                            trabajo++;
+                            break;
+
+                        case "estudio":
+                            estudio++;
+                            break;
+
+                        case "ocio":
+                            ocio++;
+                            break;
+
+                        case "descanso":
+                            descanso++;
+                            break;
+                    }
+
+                });
+
+            document.getElementById("resumen").innerHTML = `
+        <h3>📊 Resumen Semanal</h3>
+        <p>💼 Trabajo: ${trabajo} bloques</p>
+        <p>📚 Estudio: ${estudio} bloques</p>
+        <p>🎮 Ocio: ${ocio} bloques</p>
+        <p>😴 Descanso: ${descanso} bloques</p>
+    `;
+        }
+
+        cargarDatos();
+
+    </script>
+
+</body>
+
+</html>
+```
